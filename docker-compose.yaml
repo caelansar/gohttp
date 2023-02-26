@@ -1,0 +1,34 @@
+version: '3.2'
+
+services:
+  goserver:
+    image: "goserver:v1"
+    build: ./goserver
+    ports:
+      - "5001:5000"
+    # volumes:
+    # environment:
+    restart: always
+    networks:
+      backend:
+        ipv4_address: 10.0.0.4
+
+
+  coredns:
+    image: "coredns/coredns:latest"
+    command: ["-conf=/etc/coredns/Corefile"]
+    expose:
+      - '53'
+      - '53/udp'
+    ports:
+      - "1053:53/udp"
+    volumes:
+      - './config:/etc/coredns'
+    networks:
+      - backend
+
+networks:
+  backend:
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24

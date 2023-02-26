@@ -1,0 +1,13 @@
+example.io:53 {
+    errors
+    log
+    file /etc/coredns/db.example.io
+}
+
+.:53 {
+    errors
+    log
+    health
+    forward . 8.8.8.8
+}
+
